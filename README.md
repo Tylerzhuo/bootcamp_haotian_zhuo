@@ -52,12 +52,6 @@ Alpha Research → Model Development → Backtest Report
 Productionization → API Development → CI/CD Pipeline  
 
 ## Repo Structure  
-- `/data/`:  
-  - `/raw/`: Tick data (daily snapshots)  
-  - `/processed/`: Features  
-- `/src/`:  
-  - `attention_lstm.py` (core model)  
-  - `error_metrics.py`  
-- `/notebooks/`:  
-  - `market_regime_analysis.ipynb`  
-  - `attention_weights_visualization.ipynb`  
+- `/data/`
+- `/src/` 
+- `/notebooks/`
