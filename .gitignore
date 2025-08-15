@@ -1,4 +1,13 @@
-.DS_Store
-.DS_Store
-homework/.DS_Store
+# Ignore local class materials
 class_materials/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment files
+.env
+
+.DsStore
+
+
