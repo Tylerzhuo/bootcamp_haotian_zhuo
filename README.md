@@ -11,7 +11,7 @@ GitHub.
 ## Project Folder Rules
 - Keep project files organized and clearly named.
 
-# Data Storage
+# Stage 5:Data Storage
 
 ## Directory Structure
 
@@ -57,3 +57,20 @@ These abstractions reduce boilerplate and enforce consistent data handling.
 * Environment variables for data paths are correctly set.
 * User has basic familiarity with pandas DataFrames.
 * Data volume fits comfortably in memory for this project stage.
+
+# Stage 6: Data Preprocessing — Cleaning Strategy
+
+## Functions
+- `drop_missing(df, thresh=None)`: Drop rows with <70% non-missing by default (configurable via `thresh`).
+- `fill_missing_median(df, cols=None)`: Median-impute numeric columns.
+- `normalize_data(df, cols=None)`: Min–max normalize numeric columns to [0,1].
+
+## Pipeline
+1. Load raw CSV from `data/raw/`.
+2. `drop_missing` → `fill_missing_median` → `normalize_data`.
+3. Save cleaned dataset to `data/processed/` as timestamped CSV (and Parquet if available).
+
+## Assumptions & Notes
+- Operates on numeric columns; categoricals/text are left unchanged.
+- Parquet export is optional (`pyarrow` or `fastparquet` recommended).
+- Reproducible, function-based pipeline; all paths managed under `data/`.
