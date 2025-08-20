@@ -1,39 +1,89 @@
-# Equity Pricing Error Prediction  
-**Stage:** Problem Framing & Scoping (Stage 01)  
+# Project: Stock Returns and Market Index Relationship
 
-## Problem Statement  
-Current pricing models show persistent errors averaging vs actual closing prices. This project builds a hybrid model combining Bayesian Model Averaging Approach with attention mechanisms to reduce pricing errors by:  
-1) Incorporating spike-and-slab prior to substitute flat prior, in order to improve robustness of the model.
-2) Leveraging 118 factors constructed by a lot of financial indexes, which is more comprehensive than Fama-and-French model.
-Target: Narrow down the pricing errors and perform better than all the classic models.
+This project studies the relationship between individual stock returns (e.g., Apple, Microsoft) and the market index (e.g., S&P 500).  
+It follows the milestone structure from Stage 01 to Stage 07, covering problem framing, data ingestion, storage, preprocessing, and outlier analysis.
 
-## Stakeholder & User  
-- **Decision Maker**: Hedge fund pricing committee  
-- **Primary User**: Quant trading desk  
-- **Workflow Context**:  
-  - Pre-market: Generate price corridors  
-  - Intraday: Continuous error monitoring  
+---
 
-## Useful Answer & Decision  
-**Predictive Framework**:  
-- Output: Predicted pricing error bands (+/- 1σ)  
-- Deliverables:  
-  - Python pricing library (PyPI package)  
-  - Streamlit monitoring dashboard   
+## Stage 01 – Problem Framing & Scoping
+- **Research Question**: Are individual stock returns strongly correlated with the overall market index?  
+- **Hypothesis**: Stocks such as AAPL and MSFT will show a positive correlation with the S&P 500.  
+- **Scope**: Use daily closing prices over the past 3–5 years. The project focuses on correlation analysis rather than predictive modeling.
 
-## Assumptions & Constraints  
-- Data Sources:  
-  - Bloomberg terminal data (OHLCV + L2 orderbook)  
-  - Wind terminal data
-  - CSMAR financial data
-- Latency: <250ms for EOD pricing  
-- Compliance: Reg NMS compliant  
+---
 
-## Known Unknowns / Risks  
-- Market microstructure changes  
-- News sentiment parsing errors  
-- Validation: Walk-forward testing 2007-2023  
+## Stage 02 – Tooling Setup
+- Project directory structure:
+project/
+|-- data/
+|   |-- raw/
+|   `-- processed/
+|-- notebooks/
+|-- src/
+|   |-- __init__.py
+|   `-- utils.py
+|-- .env
+`-- README.md
 
-## Lifecycle Mapping  
-Alpha Research → Model Development → Backtest Report  
-Productionization → API Development → CI/CD Pipeline  
+- Environment: Python 3, with packages `pandas`, `numpy`, `matplotlib`, `seaborn`, and `yfinance`.  
+- `.env` file defines `DATA_RAW_PATH` and `DATA_PROCESSED_PATH` for reproducible paths.
+
+---
+
+## Stage 03 – Python Fundamentals
+- Utility functions implemented:
+  - `daily_return(prices)`: compute daily log returns from adjusted close prices.  
+  - `correlation(x, y)`: compute Pearson correlation coefficient between two return series.  
+- Tested these functions on small synthetic data to confirm correctness.
+
+---
+
+## Stage 04 – Data Acquisition & Ingestion
+- Data source: Yahoo Finance (via `yfinance` package) or pre-downloaded CSVs.  
+- Assets: AAPL, MSFT, and S&P 500 (ticker: ^GSPC).  
+- Saved raw price data to `data/raw/`.  
+- Merged into a single DataFrame with aligned dates.
+
+---
+
+## Stage 05 – Data Storage
+- Raw datasets stored in `data/raw/` as CSV.  
+- Processed returns stored in `data/processed/` in both CSV and Parquet formats.  
+- Implemented helper functions:
+  - `write_df(df, path)`  
+  - `read_df(path)`  
+  to handle saving and loading with friendly error handling.
+
+---
+
+## Stage 06 – Data Preprocessing
+- Aligned trading dates across assets.  
+- Handled missing values:
+  - Forward-filled missing prices if the market was open but the stock did not trade.  
+  - Dropped rows where data was missing for all assets.  
+- Removed duplicate rows if any.  
+- Normalized returns for comparability (min-max scaling to [0,1]).  
+- Verified that row counts and column datatypes were consistent after preprocessing.
+
+---
+
+## Stage 07 – Outliers & Risk Assumptions
+- Detected outliers in returns using:
+  - **IQR rule** (k = 1.5).  
+  - **Z-score rule** (|z| > 3).  
+- Compared correlation coefficients **with** and **without** outliers.  
+- Visualization:
+  - Scatter plots of stock vs. index returns.  
+  - Boxplots before and after outlier removal.  
+- **Reflection**:  
+  - Outliers (large crashes or spikes) can distort correlation.  
+  - However, in finance, extreme events are often the most important risk signals.  
+  - Removing them makes correlation appear “cleaner” but may underestimate risk.  
+  - Thresholds are heuristic; in practice, risk models (e.g., VaR) are also used.
+
+---
+
+## Project Value
+- **Educational**: Covers end-to-end data pipeline from raw data to statistical reflection.  
+- **Financial Relevance**: Correlation analysis links directly to systematic vs. idiosyncratic risk, and concepts like beta in CAPM.  
+- **Practical**: Small, reproducible project with real-world data, suitable for learning and presentation.
