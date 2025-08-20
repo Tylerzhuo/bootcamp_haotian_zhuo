@@ -1,7 +1,6 @@
 # Project: Stock Returns and Market Index Relationship
 
 This project studies the relationship between individual stock returns (e.g., Apple, Microsoft) and the market index (e.g., S&P 500).  
-It follows the milestone structure from Stage 01 to Stage 07, covering problem framing, data ingestion, storage, preprocessing, and outlier analysis.
 
 ---
 
