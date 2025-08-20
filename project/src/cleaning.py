@@ -1,6 +1,14 @@
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import pandas as pd
 import numpy as np
+
+def load_raw(symbol: str, raw_path: str = "data/raw") -> pd.DataFrame:
+    """Load raw CSV for given ticker into a DataFrame."""
+    path = f"{raw_path}/{symbol}_daily.csv"
+    df = pd.read_csv(path, parse_dates=[0], index_col=0)
+    df["symbol"] = symbol
+    return df
+
 def fill_missing_median(df, columns=None):
     df_copy = df.copy()
     if columns is None:
@@ -37,3 +45,36 @@ def correct_column_types(df):
     if 'category' in df_copy.columns:
         df_copy['category'] = df_copy['category'].str.lower().astype('category')
     return df_copy
+
+def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Standardize column names (shorter and consistent).
+    Adjusts whether data is adjusted schema or daily schema.
+    """
+    mapping_adj = {
+        "1. open": "open",
+        "2. high": "high",
+        "3. low": "low",
+        "4. close": "close",
+        "5. adjusted close": "adj_close",
+        "6. volume": "volume",
+        "7. dividend amount": "dividend",
+        "8. split coefficient": "split_coeff",
+    }
+    mapping_daily = {
+        "1. open": "open",
+        "2. high": "high",
+        "3. low": "low",
+        "4. close": "close",
+        "5. volume": "volume",
+    }
+    if "5. adjusted close" in df.columns:
+        return df.rename(columns=mapping_adj)
+    else:
+        return df.rename(columns=mapping_daily)
+
+def enforce_types(df: pd.DataFrame) -> pd.DataFrame:
+    """Ensure numeric columns are correct dtypes."""
+    numeric_cols = [c for c in df.columns if c not in ["symbol"]]
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors="coerce")
+    return df
