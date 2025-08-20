@@ -78,3 +78,15 @@ def enforce_types(df: pd.DataFrame) -> pd.DataFrame:
     numeric_cols = [c for c in df.columns if c not in ["symbol"]]
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors="coerce")
     return df
+
+def preprocess(symbol: str, raw_path="../data/raw", out_path="../data/processed") -> pd.DataFrame:
+    """Full preprocessing pipeline for one ticker."""
+    df = load_raw(symbol, raw_path)
+    df = drop_missing(df)
+    df = rename_columns(df)
+    df = enforce_types(df)
+    # Save processed file
+    out_file = f"{out_path}/{symbol}_clean.csv"
+    df.to_csv(out_file)
+    print(f"Saved cleaned data for {symbol} → {out_file}")
+    return df
