@@ -14,6 +14,7 @@ It follows the milestone structure from Stage 01 to Stage 07, covering problem f
 
 ## Stage 02 – Tooling Setup
 - Project directory structure:
+
 project/
 |-- data/
 |   |-- raw/
