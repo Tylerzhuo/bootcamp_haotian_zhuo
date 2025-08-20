@@ -13,21 +13,26 @@ It follows the milestone structure from Stage 01 to Stage 07, covering problem f
 ---
 
 ## Stage 02 – Tooling Setup
+
 - Project directory structure:
 
-- project/
-|-- data/
-|   |-- raw/
-|   `-- processed/
-|-- notebooks/
-|-- src/
-|   |-- __init__.py
-|   `-- utils.py
-|-- .env
-`-- README.md
+    ```text
+    project/
+    |-- data/
+    |   |-- raw/
+    |   `-- processed/
+    |-- notebooks/
+    |-- src/
+    |   |-- __init__.py
+    |   `-- utils.py
+    |-- .env
+    `-- README.md
+    ```
 
-- Environment: Python 3, with packages `pandas`, `numpy`, `matplotlib`, `seaborn`, and `yfinance`.  
+- Environment: Python 3, with packages `pandas`, `numpy`, `matplotlib`, `seaborn`, and `yfinance`.
+
 - `.env` file defines `DATA_RAW_PATH` and `DATA_PROCESSED_PATH` for reproducible paths.
+
 
 ---
 
