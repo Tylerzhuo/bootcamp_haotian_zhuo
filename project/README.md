@@ -85,6 +85,60 @@ This project studies the relationship between individual stock returns (e.g., Ap
   - However, in finance, extreme events are often the most important risk signals.  
   - Removing them makes correlation appear “cleaner” but may underestimate risk.  
   - Thresholds are heuristic; in practice, risk models (e.g., VaR) are also used.
+  
+---
+
+## Stage 08 – Exploratory Data Analysis (EDA)
+
+**Goal:**  
+Understand the structure, distribution, and relationships in the processed datasets (MSFT, AAPL, SP500).  
+
+**Steps Performed:**  
+- Computed **statistical summaries**: mean, median, standard deviation, skewness.  
+- Checked for **missing values** and **outliers** using IQR.  
+- Visualized data with:
+  - Histograms (close price, volume)
+  - Boxplots (close price)
+  - Scatter plots (volume vs close)
+  - Time-series plots (close price over time)
+  - Correlation heatmaps (numeric variables)
+
+**Key Insights:**  
+- Volume showed heavy skew and potential outliers.  
+- Close prices displayed clear trends and volatility over time.  
+- Strong correlations exist between price-related features.  
+
+**Implication for next steps:**  
+- Outlier treatment may be required.  
+- Skewed variables could benefit from log transformation.  
+- Time-aware validation is needed for modeling.
+
+---
+
+## Stage 09 – Feature Engineering
+
+**Goal:**  
+Construct new indicators from stock data to support modeling and financial analysis.  
+
+**New Features:**  
+1. **Volatility (7-day)**  
+   - Rolling standard deviation of closing prices.  
+   - Captures short-term uncertainty and market risk.  
+
+2. **Price-to-Volume Ratio**  
+   - Closing price ÷ trading volume.  
+   - Reflects how much price movement occurs relative to trading activity.  
+
+3. **Momentum (10-day)**  
+   - Relative change in close price compared to 10 days ago.  
+   - Positive values indicate bullish momentum; negative values suggest bearish trends.  
+
+**Impact:**  
+- These engineered features enrich the dataset with risk, liquidity, and trend information.  
+- They will be valuable inputs for predictive modeling and financial analysis in subsequent stages.
+
+---
+
 
 ---
 
